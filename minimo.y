@@ -51,7 +51,7 @@ void montar_sub(int a, int b){
 
 void montar_mult(int a, int b){
 	fprintf(f, "    movq    $%d, %%rbx\n", a);
-	fprintf(f, "    mult    $%d, %%rbx\n", b);
+	fprintf(f, "    imulq   $%d, %%rbx\n", b);
 	fprintf(f, "    movq    $1, %%rax\n");
 	fprintf(f, "    int     $0x80\n\n");
 }
