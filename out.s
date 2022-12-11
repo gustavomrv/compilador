@@ -3,7 +3,8 @@
 
 _start:
 
-    movq    $5, %rbx
+    movq    $20, %rbx
+    mult    $2, %rbx
     movq    $1, %rax
     int     $0x80
 

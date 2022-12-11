@@ -362,8 +362,8 @@ struct yy_trans_info
 	};
 static const flex_int16_t yy_accept[33] =
     {   0,
-        0,    0,   18,   16,    2,    1,    6,    7,    5,    3,
-        4,   14,   10,   15,   15,   15,   15,    8,    9,   14,
+        0,    0,   18,   16,    2,    1,    6,    7,    4,    3,
+        5,   14,   10,   15,   15,   15,   15,    8,    9,   14,
        15,   15,   15,   15,   11,   15,   15,   12,   15,   15,
        13,    0
     } ;
@@ -457,9 +457,9 @@ int yy_flex_debug = 0;
 #define YY_MORE_ADJ 0
 #define YY_RESTORE_YY_MORE_OFFSET
 char *yytext;
-#line 1 "minimo.flex"
-#line 3 "minimo.flex"
-#include "minimo.tab.h"
+#line 1 "comp.flex"
+#line 3 "comp.flex"
+#include "comp.tab.h"
 
 int lin=1, col=1;
 #line 466 "lex.yy.c"
@@ -680,7 +680,7 @@ YY_DECL
 		}
 
 	{
-#line 11 "minimo.flex"
+#line 11 "comp.flex"
 
 #line 686 "lex.yy.c"
 
@@ -741,88 +741,88 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 12 "minimo.flex"
+#line 12 "comp.flex"
 { col+=yyleng;}
 	YY_BREAK
 case 2:
 /* rule 2 can match eol */
 YY_RULE_SETUP
-#line 13 "minimo.flex"
+#line 13 "comp.flex"
 { lin++; col=1; }
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 14 "minimo.flex"
-{ col+=yyleng; yylval = yytext[0]; return MAIS;}
+#line 14 "comp.flex"
+{ col+=yyleng; return MAIS; }
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 15 "minimo.flex"
-{ col+=yyleng; yylval = yytext[0]; return MENOS;}
+#line 15 "comp.flex"
+{ col+=yyleng; return MULT; }
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 16 "minimo.flex"
-{ col+=yyleng; yylval = yytext[0]; return MULT;}
+#line 16 "comp.flex"
+{ col+=yyleng; return MENOS; }
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 17 "minimo.flex"
+#line 17 "comp.flex"
 { col+=yyleng; return ABRE_PARENTESES; }
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 18 "minimo.flex"
+#line 18 "comp.flex"
 { col+=yyleng; return FECHA_PARENTESES; }
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 19 "minimo.flex"
+#line 19 "comp.flex"
 { col+=yyleng; return ABRE_CHAVES; }
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 20 "minimo.flex"
+#line 20 "comp.flex"
 { col+=yyleng; return FECHA_CHAVES; }
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 21 "minimo.flex"
+#line 21 "comp.flex"
 { col+=yyleng; return PONTO_E_VIRGULA; }
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 22 "minimo.flex"
+#line 22 "comp.flex"
 { col+=yyleng; return INT; }
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 23 "minimo.flex"
+#line 23 "comp.flex"
 { col+=yyleng; return MAIN; }
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 24 "minimo.flex"
+#line 24 "comp.flex"
 { col+=yyleng; return RETURN; }
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 25 "minimo.flex"
+#line 25 "comp.flex"
 { col+=yyleng; yylval=atoi(yytext); return NUM; }
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 26 "minimo.flex"
+#line 26 "comp.flex"
 { col+=yyleng; return ID; }
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 27 "minimo.flex"
+#line 27 "comp.flex"
 { col+=yyleng; return DESCONHECIDO; }
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 28 "minimo.flex"
+#line 28 "comp.flex"
 ECHO;
 	YY_BREAK
 #line 829 "lex.yy.c"
@@ -1830,7 +1830,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 28 "minimo.flex"
+#line 28 "comp.flex"
 
 
 
