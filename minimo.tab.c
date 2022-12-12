@@ -104,29 +104,37 @@ void montar_codigo_retorno(int numero){
 }
 
 void montar_add(int a, int b){
-	fprintf(f, "    movq    $%d, %%rax\n", a);
-	fprintf(f, "    movq    $%d, %%rbx\n", b);
-	fprintf(f, "    addq    %%rax, %%rbx\n");
-	fprintf(f, "    movq    $1, %%rax\n");
-	fprintf(f, "    int     $0x80\n\n");
+	fprintf(f, "	popq 	%%rax\n");
+	fprintf(f, "	popq 	%%rbx\n");
+	fprintf(f, "	addq 	%%rbx, %%rax\n");
+	fprintf(f, "	pushq 	%%rax\n\n");
 }
 
 void montar_sub(int a, int b){
-	fprintf(f, "    movq    $%d, %%rbx\n", a);
-	fprintf(f, "    subq    $%d, %%rbx\n", b);
-	fprintf(f, "    movq    $1, %%rax\n");
-	fprintf(f, "    int     $0x80\n\n");
+	fprintf(f, "	popq 	%%rbx\n");
+	fprintf(f, "	popq 	%%rax\n");
+	fprintf(f, "	subq 	%%rbx, %%rax\n");
+	fprintf(f, "	pushq 	%%rax\n\n");
 }
 
 void montar_mult(int a, int b){
-	fprintf(f, "    movq    $%d, %%rbx\n", a);
-	fprintf(f, "    imulq   $%d, %%rbx\n", b);
+	fprintf(f, "	popq 	%%rax\n");
+	fprintf(f, "	popq 	%%rbx\n");
+	fprintf(f, "	mulq 	%%rbx\n");
+	fprintf(f, "	pushq 	%%rax\n\n");
+}
+
+void montar_empilhar(int a){
+	fprintf(f, "	pushq 	$%i\n\n", a);
+}
+
+void printar_res() {
+	fprintf(f, "	popq 	%%rbx\n");
 	fprintf(f, "    movq    $1, %%rax\n");
 	fprintf(f, "    int     $0x80\n\n");
 }
 
-
-#line 130 "minimo.tab.c"
+#line 138 "minimo.tab.c"
 
 # ifndef YY_CAST
 #  ifdef __cplusplus
@@ -171,18 +179,12 @@ enum yysymbol_kind_t
   YYSYMBOL_MENOS = 14,                     /* MENOS  */
   YYSYMBOL_MULT = 15,                      /* MULT  */
   YYSYMBOL_NUM = 16,                       /* NUM  */
-  YYSYMBOL_17_ = 17,                       /* '+'  */
-  YYSYMBOL_18_ = 18,                       /* '-'  */
-  YYSYMBOL_19_ = 19,                       /* '*'  */
-  YYSYMBOL_YYACCEPT = 20,                  /* $accept  */
-  YYSYMBOL_programa = 21,                  /* programa  */
-  YYSYMBOL_22_1 = 22,                      /* $@1  */
-  YYSYMBOL_corpo = 23,                     /* corpo  */
-  YYSYMBOL_24_2 = 24,                      /* $@2  */
-  YYSYMBOL_exp = 25,                       /* exp  */
-  YYSYMBOL_26_3 = 26,                      /* $@3  */
-  YYSYMBOL_27_4 = 27,                      /* $@4  */
-  YYSYMBOL_28_5 = 28                       /* $@5  */
+  YYSYMBOL_YYACCEPT = 17,                  /* $accept  */
+  YYSYMBOL_programa = 18,                  /* programa  */
+  YYSYMBOL_19_1 = 19,                      /* $@1  */
+  YYSYMBOL_corpo = 20,                     /* corpo  */
+  YYSYMBOL_21_2 = 21,                      /* $@2  */
+  YYSYMBOL_exp = 22                        /* exp  */
 };
 typedef enum yysymbol_kind_t yysymbol_kind_t;
 
@@ -504,16 +506,16 @@ union yyalloc
 /* YYFINAL -- State number of the termination state.  */
 #define YYFINAL  4
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   33
+#define YYLAST   26
 
 /* YYNTOKENS -- Number of terminals.  */
-#define YYNTOKENS  20
+#define YYNTOKENS  17
 /* YYNNTS -- Number of nonterminals.  */
-#define YYNNTS  9
+#define YYNNTS  6
 /* YYNRULES -- Number of rules.  */
-#define YYNRULES  15
+#define YYNRULES  13
 /* YYNSTATES -- Number of states.  */
-#define YYNSTATES  31
+#define YYNSTATES  28
 
 /* YYMAXUTOK -- Last valid token kind.  */
 #define YYMAXUTOK   271
@@ -534,7 +536,7 @@ static const yytype_int8 yytranslate[] =
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
-       2,     2,    19,    17,     2,    18,     2,     2,     2,     2,
+       2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
@@ -564,8 +566,8 @@ static const yytype_int8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_int8 yyrline[] =
 {
-       0,    67,    67,    67,    68,    68,    69,    70,    72,    72,
-      73,    73,    74,    74,    75,    76
+       0,    75,    75,    75,    76,    76,    77,    78,    80,    81,
+      82,    83,    84,    85
 };
 #endif
 
@@ -584,8 +586,7 @@ static const char *const yytname[] =
   "\"end of file\"", "error", "\"invalid token\"", "INT", "MAIN",
   "ABRE_PARENTESES", "FECHA_PARENTESES", "ABRE_CHAVES", "RETURN",
   "PONTO_E_VIRGULA", "FECHA_CHAVES", "ID", "DESCONHECIDO", "MAIS", "MENOS",
-  "MULT", "NUM", "'+'", "'-'", "'*'", "$accept", "programa", "$@1",
-  "corpo", "$@2", "exp", "$@3", "$@4", "$@5", YY_NULLPTR
+  "MULT", "NUM", "$accept", "programa", "$@1", "corpo", "$@2", "exp", YY_NULLPTR
 };
 
 static const char *
@@ -601,11 +602,11 @@ yysymbol_name (yysymbol_kind_t yysymbol)
 static const yytype_int16 yytoknum[] =
 {
        0,   256,   257,   258,   259,   260,   261,   262,   263,   264,
-     265,   266,   267,   268,   269,   270,   271,    43,    45,    42
+     265,   266,   267,   268,   269,   270,   271
 };
 #endif
 
-#define YYPACT_NINF (-18)
+#define YYPACT_NINF (-8)
 
 #define yypact_value_is_default(Yyn) \
   ((Yyn) == YYPACT_NINF)
@@ -619,10 +620,9 @@ static const yytype_int16 yytoknum[] =
      STATE-NUM.  */
 static const yytype_int8 yypact[] =
 {
-       7,     8,    11,     9,   -18,    10,     6,   -18,    12,    -1,
-      13,    -9,    15,   -18,   -18,     1,     2,     3,   -18,    12,
-     -18,   -18,   -18,   -18,     5,     5,     5,   -12,   -18,   -18,
-     -18
+       0,     6,     4,    14,    -8,    15,    13,    -8,    16,    -5,
+      12,    -4,    17,    -7,    -8,    -8,     3,    -8,    -8,    -4,
+      -4,    -4,    -8,    16,     8,     8,    -8,    -8
 };
 
   /* YYDEFACT[STATE-NUM] -- Default reduction number in state STATE-NUM.
@@ -630,22 +630,21 @@ static const yytype_int8 yypact[] =
      means the default is an error.  */
 static const yytype_int8 yydefact[] =
 {
-       0,     0,     0,     0,     1,     0,     0,     2,     7,    15,
-       0,     0,     0,     3,     4,     0,     0,     0,     6,     7,
-       8,    10,    12,     5,    15,    15,    15,     0,     9,    11,
-      13
+       0,     0,     0,     0,     1,     0,     0,     2,     7,    13,
+       0,    13,    12,     0,     3,    12,     0,     4,     6,    13,
+      13,    13,    11,     7,     8,     9,    10,     5
 };
 
   /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int8 yypgoto[] =
 {
-     -18,   -18,   -18,    14,   -18,   -17,   -18,   -18,   -18
+      -8,    -8,    -8,     2,    -8,    -6
 };
 
   /* YYDEFGOTO[NTERM-NUM].  */
 static const yytype_int8 yydefgoto[] =
 {
-       0,     2,     8,    10,    19,    12,    24,    25,    26
+       0,     2,     8,    10,    23,    13
 };
 
   /* YYTABLE[YYPACT[STATE-NUM]] -- What to do in state STATE-NUM.  If
@@ -653,42 +652,39 @@ static const yytype_int8 yydefgoto[] =
      number is the opposite.  If YYTABLE_NINF, syntax error.  */
 static const yytype_int8 yytable[] =
 {
-      14,    15,    16,    17,    15,    16,    17,    28,    29,    30,
-       1,     4,     3,     7,     5,    11,     6,    20,    21,    22,
-       9,    27,     0,    13,    18,     0,     0,     0,     0,     0,
-       0,     0,     0,    23
+      11,    11,    18,     1,     4,    16,    19,    20,    21,    22,
+       3,    12,    15,    24,    25,    26,    19,    20,    21,     5,
+       7,     6,    14,    21,     9,    27,    17
 };
 
 static const yytype_int8 yycheck[] =
 {
-       9,    13,    14,    15,    13,    14,    15,    24,    25,    26,
-       3,     0,     4,     7,     5,    16,     6,    16,    16,    16,
-       8,    16,    -1,    10,     9,    -1,    -1,    -1,    -1,    -1,
-      -1,    -1,    -1,    19
+       5,     5,     9,     3,     0,    11,    13,    14,    15,     6,
+       4,    16,    16,    19,    20,    21,    13,    14,    15,     5,
+       7,     6,    10,    15,     8,    23,     9
 };
 
   /* YYSTOS[STATE-NUM] -- The (internal number of the) accessing
      symbol of state STATE-NUM.  */
 static const yytype_int8 yystos[] =
 {
-       0,     3,    21,     4,     0,     5,     6,     7,    22,     8,
-      23,    16,    25,    10,     9,    13,    14,    15,     9,    24,
-      16,    16,    16,    23,    26,    27,    28,    16,    25,    25,
-      25
+       0,     3,    18,     4,     0,     5,     6,     7,    19,     8,
+      20,     5,    16,    22,    10,    16,    22,     9,     9,    13,
+      14,    15,     6,    21,    22,    22,    22,    20
 };
 
   /* YYR1[YYN] -- Symbol number of symbol that rule YYN derives.  */
 static const yytype_int8 yyr1[] =
 {
-       0,    20,    22,    21,    24,    23,    23,    23,    26,    25,
-      27,    25,    28,    25,    25,    25
+       0,    17,    19,    18,    21,    20,    20,    20,    22,    22,
+      22,    22,    22,    22
 };
 
   /* YYR2[YYN] -- Number of symbols on the right hand side of rule YYN.  */
 static const yytype_int8 yyr2[] =
 {
-       0,     2,     0,     8,     0,     5,     3,     0,     0,     5,
-       0,     5,     0,     5,     1,     0
+       0,     2,     0,     8,     0,     5,     3,     0,     3,     3,
+       3,     3,     1,     0
 };
 
 
@@ -1156,43 +1152,55 @@ yyreduce:
   switch (yyn)
     {
   case 2: /* $@1: %empty  */
-#line 67 "minimo.y"
+#line 75 "minimo.y"
                                                                         {montar_codigo_inicial();}
-#line 1162 "minimo.tab.c"
+#line 1158 "minimo.tab.c"
     break;
 
   case 3: /* programa: INT MAIN ABRE_PARENTESES FECHA_PARENTESES ABRE_CHAVES $@1 corpo FECHA_CHAVES  */
-#line 67 "minimo.y"
+#line 75 "minimo.y"
                                                                                                                       {montar_codigo_final();}
-#line 1168 "minimo.tab.c"
+#line 1164 "minimo.tab.c"
     break;
 
   case 4: /* $@2: %empty  */
-#line 68 "minimo.y"
+#line 76 "minimo.y"
                                              {montar_codigo_retorno(yyvsp[-1]);}
-#line 1174 "minimo.tab.c"
+#line 1170 "minimo.tab.c"
     break;
 
-  case 8: /* $@3: %empty  */
-#line 72 "minimo.y"
-                           {montar_add(yyvsp[-2],yyvsp[0]);}
-#line 1180 "minimo.tab.c"
+  case 6: /* corpo: RETURN exp PONTO_E_VIRGULA  */
+#line 77 "minimo.y"
+                                                     {printar_res();}
+#line 1176 "minimo.tab.c"
     break;
 
-  case 10: /* $@4: %empty  */
-#line 73 "minimo.y"
-                                        {montar_sub(yyvsp[-2],yyvsp[0]);}
-#line 1186 "minimo.tab.c"
+  case 8: /* exp: exp MAIS exp  */
+#line 80 "minimo.y"
+                                                                                        {montar_add(yyvsp[-2],yyvsp[0]);}
+#line 1182 "minimo.tab.c"
     break;
 
-  case 12: /* $@5: %empty  */
-#line 74 "minimo.y"
-                                       {montar_mult(yyvsp[-2],yyvsp[0]);}
-#line 1192 "minimo.tab.c"
+  case 9: /* exp: exp MENOS exp  */
+#line 81 "minimo.y"
+                                                                                                {montar_sub(yyvsp[-2],yyvsp[0]);}
+#line 1188 "minimo.tab.c"
+    break;
+
+  case 10: /* exp: exp MULT exp  */
+#line 82 "minimo.y"
+                                                                                                {montar_mult(yyvsp[-2],yyvsp[0]);}
+#line 1194 "minimo.tab.c"
+    break;
+
+  case 12: /* exp: NUM  */
+#line 84 "minimo.y"
+                                                                                                        {montar_empilhar(yyvsp[0]);}
+#line 1200 "minimo.tab.c"
     break;
 
 
-#line 1196 "minimo.tab.c"
+#line 1204 "minimo.tab.c"
 
       default: break;
     }
@@ -1386,9 +1394,36 @@ yyreturn:
   return yyresult;
 }
 
-#line 78 "minimo.y"
+#line 88 "minimo.y"
 
 int main(){
 	yyparse();
 	printf("Programa OK.\n");
 }
+/*
+exp         : NUM MAIS exp 		{montar_add($1,$3);} 
+			| NUM MENOS exp 	{montar_sub($1,$3);} 
+			| NUM MULT exp 		{montar_mult($1,$3);} 
+			| NUM				{}
+			;
+
+exp         : NUM MAIS NUM {montar_add($1,$3);} exp
+			| NUM MENOS NUM {montar_sub($1,$3);} exp
+			| NUM MULT NUM {montar_mult($1,$3);} exp
+			|
+			;
+.text
+    .global _start
+
+_start:
+
+    movq    $1, %rax
+    movq    $3, %rbx
+    addq    %rax, %rbx
+
+    movq    $1, %rax
+    subq    $1, %rbx
+
+    movq    $1, %rax
+    int     $0x80
+*/

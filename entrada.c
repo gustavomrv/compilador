@@ -1,3 +1,5 @@
 int main(){
-    return 5 + 3 * 4;
+    int x;
+    int y; int cont;
+    return x;
 }
