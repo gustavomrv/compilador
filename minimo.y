@@ -2,12 +2,18 @@
 %{
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 extern int lin;
 extern int col;
 extern int yyleng;
 extern char *yytext;
 FILE *f;
+
+int i;
+int cont = 0;
+char texto_das_variaveis[10][10];
+int  valor_das_variaveis[10];
 
 int yyerror(char *msg){
 	printf("%s (%i, %i) token encontrado: \"%s\"\n", msg, lin, col-yyleng, yytext);
@@ -66,7 +72,26 @@ void printar_res() {
 }
 
 void declarar_variavel(char variavel[] ){
-	printf("%s\n", variavel);
+	// printf("%s\n", variavel);
+	for(i = 0; i < strlen(variavel); i++) {
+		texto_das_variaveis[cont][i] = variavel[i];
+	}
+	valor_das_variaveis[cont] = -999;
+	cont++;
+	
+	/* for(i=0; i<5; i++) {
+        printf("Variavel %s com valor %d\n",texto_das_variaveis[i], valor_das_variaveis[i]);
+    }
+	printf("\n\n"); */
+	
+}
+
+void atribuir_valor_variavel(char variavel[] , int num){
+	for(i=0; i < 10; i++) {
+		if (strcmp(variavel, texto_das_variaveis[i]) == 0){
+			valor_das_variaveis[i] = num;
+		}
+    }
 }
 %}
 
@@ -86,9 +111,9 @@ void declarar_variavel(char variavel[] ){
 %left MULT
 %%
 programa	: INT MAIN ABRE_PARENTESES FECHA_PARENTESES ABRE_CHAVES {montar_codigo_inicial();} corpo FECHA_CHAVES {montar_codigo_final();} ;
-corpo		: RETURN exp PONTO_E_VIRGULA {printar_res();} corpo
-			| INT ID PONTO_E_VIRGULA	 {declarar_variavel($2);} corpo
-			| ID IGUAL NUM PONTO_E_VIRGULA {} corpo
+corpo		: RETURN exp PONTO_E_VIRGULA   {printar_res();} corpo
+			| INT ID PONTO_E_VIRGULA	   {declarar_variavel($2);} corpo
+			| ID IGUAL NUM PONTO_E_VIRGULA {atribuir_valor_variavel($1, $3);} corpo
 			|
 			;
 exp         : exp MAIS exp 								{montar_add();} 
@@ -96,6 +121,7 @@ exp         : exp MAIS exp 								{montar_add();}
 			| exp MULT exp 								{montar_mult();} 
 			| ABRE_PARENTESES exp FECHA_PARENTESES
 			| NUM										{montar_empilhar($1);}
+			| ID										{}
 			;
 
 %%

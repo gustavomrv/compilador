@@ -3,7 +3,7 @@
 
 _start:
 
-	pushq 	$4
+	pushq 	$5
 
 	popq 	%rbx
     movq    $1, %rax
