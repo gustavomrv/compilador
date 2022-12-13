@@ -3,11 +3,11 @@
 
 _start:
 
-	pushq 	$4
+	pushq 	$1
 
-	pushq 	$7
+	pushq 	$3
 
-	pushq 	$4
+	pushq 	$2
 
 	popq 	%rax
 	popq 	%rbx
@@ -16,7 +16,7 @@ _start:
 
 	popq 	%rax
 	popq 	%rbx
-	addq 	%rbx, %rax
+	mulq 	%rbx
 	pushq 	%rax
 
 	popq 	%rbx
