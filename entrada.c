@@ -1,5 +1,5 @@
 int main(){
-    int x; int y; int t; int z;
-    z = 1; t = 3;
-    x = 9; y = x; return z * (t * 2);
+    int z; int x;
+    z = 2; x = 8;
+    return z != 2;
 }
