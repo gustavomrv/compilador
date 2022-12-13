@@ -34,21 +34,21 @@ void montar_codigo_retorno(int numero){
 	fprintf(f, "    int     $0x80\n\n");
 }
 
-void montar_add(int a, int b){
+void montar_add(){
 	fprintf(f, "	popq 	%%rax\n");
 	fprintf(f, "	popq 	%%rbx\n");
 	fprintf(f, "	addq 	%%rbx, %%rax\n");
 	fprintf(f, "	pushq 	%%rax\n\n");
 }
 
-void montar_sub(int a, int b){
+void montar_sub(){
 	fprintf(f, "	popq 	%%rbx\n");
 	fprintf(f, "	popq 	%%rax\n");
 	fprintf(f, "	subq 	%%rbx, %%rax\n");
 	fprintf(f, "	pushq 	%%rax\n\n");
 }
 
-void montar_mult(int a, int b){
+void montar_mult(){
 	fprintf(f, "	popq 	%%rax\n");
 	fprintf(f, "	popq 	%%rbx\n");
 	fprintf(f, "	mulq 	%%rbx\n");
@@ -80,7 +80,7 @@ void declarar_variavel(char variavel[] ){
 
 %token <string> ID
 %token <inteiro> NUM
-%type <inteiro> exp
+
 
 %left MAIS MENOS
 %left MULT
@@ -91,9 +91,9 @@ corpo		: RETURN exp PONTO_E_VIRGULA {printar_res();} corpo
 			| ID IGUAL NUM PONTO_E_VIRGULA {} corpo
 			|
 			;
-exp         : exp MAIS exp 								{montar_add($1,$3);} 
-			| exp MENOS exp 							{montar_sub($1,$3);} 
-			| exp MULT exp 								{montar_mult($1,$3);} 
+exp         : exp MAIS exp 								{montar_add();} 
+			| exp MENOS exp 							{montar_sub();} 
+			| exp MULT exp 								{montar_mult();} 
 			| ABRE_PARENTESES exp FECHA_PARENTESES
 			| NUM										{montar_empilhar($1);}
 			;

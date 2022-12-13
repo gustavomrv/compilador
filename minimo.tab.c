@@ -103,21 +103,21 @@ void montar_codigo_retorno(int numero){
 	fprintf(f, "    int     $0x80\n\n");
 }
 
-void montar_add(int a, int b){
+void montar_add(){
 	fprintf(f, "	popq 	%%rax\n");
 	fprintf(f, "	popq 	%%rbx\n");
 	fprintf(f, "	addq 	%%rbx, %%rax\n");
 	fprintf(f, "	pushq 	%%rax\n\n");
 }
 
-void montar_sub(int a, int b){
+void montar_sub(){
 	fprintf(f, "	popq 	%%rbx\n");
 	fprintf(f, "	popq 	%%rax\n");
 	fprintf(f, "	subq 	%%rbx, %%rax\n");
 	fprintf(f, "	pushq 	%%rax\n\n");
 }
 
-void montar_mult(int a, int b){
+void montar_mult(){
 	fprintf(f, "	popq 	%%rax\n");
 	fprintf(f, "	popq 	%%rbx\n");
 	fprintf(f, "	mulq 	%%rbx\n");
@@ -1196,19 +1196,19 @@ yyreduce:
 
   case 11: /* exp: exp MAIS exp  */
 #line 94 "minimo.y"
-                                                                                        {montar_add((yyvsp[-2].inteiro),(yyvsp[0].inteiro));}
+                                                                                        {montar_add();}
 #line 1201 "minimo.tab.c"
     break;
 
   case 12: /* exp: exp MENOS exp  */
 #line 95 "minimo.y"
-                                                                                                {montar_sub((yyvsp[-2].inteiro),(yyvsp[0].inteiro));}
+                                                                                                {montar_sub();}
 #line 1207 "minimo.tab.c"
     break;
 
   case 13: /* exp: exp MULT exp  */
 #line 96 "minimo.y"
-                                                                                                {montar_mult((yyvsp[-2].inteiro),(yyvsp[0].inteiro));}
+                                                                                                {montar_mult();}
 #line 1213 "minimo.tab.c"
     break;
 
