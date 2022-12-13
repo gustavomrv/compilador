@@ -1,7 +1,9 @@
 int main(){
-    int var;
-    int x;
-    int y;
-    y = 10;
-    return 5;
+    int z;
+    int t;
+
+    z = 4;
+    t = 7;
+
+    return z + (t * z);
 }

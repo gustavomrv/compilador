@@ -93,6 +93,16 @@ void atribuir_valor_variavel(char variavel[] , int num){
 		}
     }
 }
+
+void empilhar_variavel(char variavel[]){
+	int num = -999;
+	for(i=0; i < 10; i++) {
+		if (strcmp(variavel, texto_das_variaveis[i]) == 0){
+			num = valor_das_variaveis[i];
+		}
+    }
+	fprintf(f, "	pushq 	$%i\n\n", num);
+}
 %}
 
 %union { 
@@ -121,7 +131,7 @@ exp         : exp MAIS exp 								{montar_add();}
 			| exp MULT exp 								{montar_mult();} 
 			| ABRE_PARENTESES exp FECHA_PARENTESES
 			| NUM										{montar_empilhar($1);}
-			| ID										{}
+			| ID										{empilhar_variavel($1);}
 			;
 
 %%

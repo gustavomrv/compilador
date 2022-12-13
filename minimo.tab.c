@@ -163,7 +163,17 @@ void atribuir_valor_variavel(char variavel[] , int num){
     }
 }
 
-#line 167 "minimo.tab.c"
+void empilhar_variavel(char variavel[]){
+	int num = -999;
+	for(i=0; i < 10; i++) {
+		if (strcmp(variavel, texto_das_variaveis[i]) == 0){
+			num = valor_das_variaveis[i];
+		}
+    }
+	fprintf(f, "	pushq 	$%i\n\n", num);
+}
+
+#line 177 "minimo.tab.c"
 
 # ifndef YY_CAST
 #  ifdef __cplusplus
@@ -596,10 +606,10 @@ static const yytype_int8 yytranslate[] =
 
 #if YYDEBUG
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
-static const yytype_int8 yyrline[] =
+static const yytype_uint8 yyrline[] =
 {
-       0,   113,   113,   113,   114,   114,   115,   115,   116,   116,
-     117,   119,   120,   121,   122,   123,   124
+       0,   123,   123,   123,   124,   124,   125,   125,   126,   126,
+     127,   129,   130,   131,   132,   133,   134
 };
 #endif
 
@@ -1190,67 +1200,67 @@ yyreduce:
   switch (yyn)
     {
   case 2: /* $@1: %empty  */
-#line 113 "minimo.y"
+#line 123 "minimo.y"
                                                                         {montar_codigo_inicial();}
-#line 1196 "minimo.tab.c"
+#line 1206 "minimo.tab.c"
     break;
 
   case 3: /* programa: INT MAIN ABRE_PARENTESES FECHA_PARENTESES ABRE_CHAVES $@1 corpo FECHA_CHAVES  */
-#line 113 "minimo.y"
+#line 123 "minimo.y"
                                                                                                                       {montar_codigo_final();}
-#line 1202 "minimo.tab.c"
+#line 1212 "minimo.tab.c"
     break;
 
   case 4: /* $@2: %empty  */
-#line 114 "minimo.y"
+#line 124 "minimo.y"
                                                {printar_res();}
-#line 1208 "minimo.tab.c"
+#line 1218 "minimo.tab.c"
     break;
 
   case 6: /* $@3: %empty  */
-#line 115 "minimo.y"
+#line 125 "minimo.y"
                                                            {declarar_variavel((yyvsp[-1].string));}
-#line 1214 "minimo.tab.c"
+#line 1224 "minimo.tab.c"
     break;
 
   case 8: /* $@4: %empty  */
-#line 116 "minimo.y"
+#line 126 "minimo.y"
                                                        {atribuir_valor_variavel((yyvsp[-3].string), (yyvsp[-1].inteiro));}
-#line 1220 "minimo.tab.c"
+#line 1230 "minimo.tab.c"
     break;
 
   case 11: /* exp: exp MAIS exp  */
-#line 119 "minimo.y"
+#line 129 "minimo.y"
                                                                                         {montar_add();}
-#line 1226 "minimo.tab.c"
+#line 1236 "minimo.tab.c"
     break;
 
   case 12: /* exp: exp MENOS exp  */
-#line 120 "minimo.y"
+#line 130 "minimo.y"
                                                                                                 {montar_sub();}
-#line 1232 "minimo.tab.c"
+#line 1242 "minimo.tab.c"
     break;
 
   case 13: /* exp: exp MULT exp  */
-#line 121 "minimo.y"
+#line 131 "minimo.y"
                                                                                                 {montar_mult();}
-#line 1238 "minimo.tab.c"
+#line 1248 "minimo.tab.c"
     break;
 
   case 15: /* exp: NUM  */
-#line 123 "minimo.y"
+#line 133 "minimo.y"
                                                                                                         {montar_empilhar((yyvsp[0].inteiro));}
-#line 1244 "minimo.tab.c"
+#line 1254 "minimo.tab.c"
     break;
 
   case 16: /* exp: ID  */
-#line 124 "minimo.y"
-                                                                                                        {}
-#line 1250 "minimo.tab.c"
+#line 134 "minimo.y"
+                                                                                                        {empilhar_variavel((yyvsp[0].string));}
+#line 1260 "minimo.tab.c"
     break;
 
 
-#line 1254 "minimo.tab.c"
+#line 1264 "minimo.tab.c"
 
       default: break;
     }
@@ -1444,7 +1454,7 @@ yyreturn:
   return yyresult;
 }
 
-#line 127 "minimo.y"
+#line 137 "minimo.y"
 
 int main(){
 	yyparse();
