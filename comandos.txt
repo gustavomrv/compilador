@@ -6,3 +6,5 @@ sudo ./rodar_ass.sh
 
 chmod +x teste_rapido.sh
 sudo ./teste_rapido.sh
+
+gcc -S -fno-asynchronous-unwind-tables entrada.c -o entrada.s

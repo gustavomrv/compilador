@@ -64,17 +64,31 @@ void printar_res() {
 	fprintf(f, "    movq    $1, %%rax\n");
 	fprintf(f, "    int     $0x80\n\n");
 }
+
+void declarar_variavel(char variavel[] ){
+	printf("%s\n", variavel);
+}
 %}
 
-%token INT MAIN ABRE_PARENTESES FECHA_PARENTESES ABRE_CHAVES RETURN PONTO_E_VIRGULA FECHA_CHAVES ID DESCONHECIDO
-%token MAIS MENOS MULT
-%token NUM
+%union { 
+  	char *string; 
+  	int inteiro; 
+} 
+
+%token INT MAIN ABRE_PARENTESES FECHA_PARENTESES ABRE_CHAVES RETURN PONTO_E_VIRGULA FECHA_CHAVES DESCONHECIDO
+%token MAIS MENOS MULT IGUAL
+
+%token <string> ID
+%token <inteiro> NUM
+%type <inteiro> exp
+
 %left MAIS MENOS
 %left MULT
 %%
 programa	: INT MAIN ABRE_PARENTESES FECHA_PARENTESES ABRE_CHAVES {montar_codigo_inicial();} corpo FECHA_CHAVES {montar_codigo_final();} ;
-corpo		: RETURN NUM PONTO_E_VIRGULA {montar_codigo_retorno($2);} corpo
-			| RETURN exp PONTO_E_VIRGULA {printar_res();}
+corpo		: RETURN exp PONTO_E_VIRGULA {printar_res();} corpo
+			| INT ID PONTO_E_VIRGULA	 {declarar_variavel($2);} corpo
+			| ID IGUAL NUM PONTO_E_VIRGULA {} corpo
 			|
 			;
 exp         : exp MAIS exp 								{montar_add($1,$3);} 
@@ -82,7 +96,6 @@ exp         : exp MAIS exp 								{montar_add($1,$3);}
 			| exp MULT exp 								{montar_mult($1,$3);} 
 			| ABRE_PARENTESES exp FECHA_PARENTESES
 			| NUM										{montar_empilhar($1);}
-			|
 			;
 
 %%

@@ -11,6 +11,7 @@ LETRA	[A-Za-z_]
 %%
 " "		                    { col+=yyleng;}
 \n		                    { lin++; col=1; }
+"="                         { col+=yyleng; return IGUAL; }
 "+"		                    { col+=yyleng; return MAIS; }
 "*"		                    { col+=yyleng; return MULT; }
 "-"		                    { col+=yyleng; return MENOS; }
@@ -22,8 +23,8 @@ LETRA	[A-Za-z_]
 "int"	                    { col+=yyleng; return INT; }
 "main"	                    { col+=yyleng; return MAIN; }
 "return"	                { col+=yyleng; return RETURN; }
-{DIGITO}+	                { col+=yyleng; yylval=atoi(yytext); return NUM; }
-{LETRA}({LETRA}|{DIGITO})*  { col+=yyleng; return ID; }
+{DIGITO}+	                { col+=yyleng; yylval.inteiro=atoi(yytext); return NUM; }
+{LETRA}({LETRA}|{DIGITO})*  { col+=yyleng; yylval.string=strdup(yytext); return ID; }
 .			                { col+=yyleng; return DESCONHECIDO; }
 %%
 

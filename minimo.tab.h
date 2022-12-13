@@ -62,19 +62,30 @@ extern int yydebug;
     RETURN = 263,                  /* RETURN  */
     PONTO_E_VIRGULA = 264,         /* PONTO_E_VIRGULA  */
     FECHA_CHAVES = 265,            /* FECHA_CHAVES  */
-    ID = 266,                      /* ID  */
-    DESCONHECIDO = 267,            /* DESCONHECIDO  */
-    MAIS = 268,                    /* MAIS  */
-    MENOS = 269,                   /* MENOS  */
-    MULT = 270,                    /* MULT  */
-    NUM = 271                      /* NUM  */
+    DESCONHECIDO = 266,            /* DESCONHECIDO  */
+    MAIS = 267,                    /* MAIS  */
+    MENOS = 268,                   /* MENOS  */
+    MULT = 269,                    /* MULT  */
+    IGUAL = 270,                   /* IGUAL  */
+    ID = 271,                      /* ID  */
+    NUM = 272                      /* NUM  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
-typedef int YYSTYPE;
+union YYSTYPE
+{
+#line 73 "minimo.y"
+ 
+  	char *string; 
+  	int inteiro; 
+
+#line 86 "minimo.tab.h"
+
+};
+typedef union YYSTYPE YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define YYSTYPE_IS_DECLARED 1
 #endif
