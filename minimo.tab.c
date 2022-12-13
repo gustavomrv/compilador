@@ -74,6 +74,35 @@
 #include <string.h>
 
 #define N_MAXIMO_DE_VARIAVEIS 10
+#define TAM 10
+
+typedef struct pilha{
+	int vet[TAM];
+	int topo;
+}Pilha;
+
+int empilhar(Pilha *p, int vlr){
+	if (p->topo == TAM){ // Pilha cheia
+		return 0;
+	}
+
+	p->vet[p->topo] = vlr;
+	p->topo++;
+	return 1;
+}
+
+int desempilhar(Pilha *p){
+	if (p->topo == 0)
+		return 0;
+	p->topo--;
+	return 1;
+}
+
+int * buscar_topo(Pilha *p){
+	if (p->topo == 0)
+		return NULL;
+	return &p->vet[p->topo-1];
+}
 
 extern int lin;
 extern int col;
@@ -81,10 +110,13 @@ extern int yyleng;
 extern char *yytext;
 FILE *f;
 
+int valor = 0;
 int i, j;
 int cont = 0;
 char texto_das_variaveis[N_MAXIMO_DE_VARIAVEIS][N_MAXIMO_DE_VARIAVEIS];
 int  valor_das_variaveis[N_MAXIMO_DE_VARIAVEIS];
+
+Pilha p;
 
 int yyerror(char *msg){
 	printf("%s (%i, %i) token encontrado: \"%s\"\n", msg, lin, col-yyleng, yytext);
@@ -157,6 +189,15 @@ void declarar_variavel(char variavel[] ){
 	
 }
 
+void atribuir_variavel(char variavel[]){
+	for(i=0; i < N_MAXIMO_DE_VARIAVEIS; i++) {
+		if (strcmp(variavel, texto_das_variaveis[i]) == 0){
+			valor_das_variaveis[i] = *buscar_topo(&p); 
+			desempilhar(&p); 
+		}
+    }
+}
+
 void atribuir_num_variavel(char variavel[] , int num){
 	for(i=0; i < N_MAXIMO_DE_VARIAVEIS; i++) {
 		if (strcmp(variavel, texto_das_variaveis[i]) == 0){
@@ -186,7 +227,7 @@ void empilhar_variavel(char variavel[]){
     }
 	fprintf(f, "	pushq 	$%i\n\n", num);
 }
-//======================= COMPARAÇÕES ===============================//
+//======================= COMPARAÇÕES ====================================================================================//
 void igualdade_nums(int a, int b){
 	if (a == b) fprintf(f, "	pushq 	$1\n\n");
 		else 	fprintf(f, "	pushq 	$0\n\n");
@@ -270,7 +311,7 @@ void maior_ids(char variavel_a[] , char variavel_b[]){
 			for(j=0; j < N_MAXIMO_DE_VARIAVEIS; j++) {
 				if (strcmp(variavel_b, texto_das_variaveis[j]) == 0){
 					if (valor_das_variaveis[i] > valor_das_variaveis[j]) fprintf(f, "	pushq 	$1\n\n");
-					else 												  fprintf(f, "	pushq 	$0\n\n");
+					else 												 fprintf(f, "	pushq 	$0\n\n");
 				}
 			}
 		}
@@ -366,9 +407,9 @@ void menor_igual_ids(char variavel_a[] , char variavel_b[]){
 		}
     }
 }
-//===================================================================//
+//==========================================================================================================//
 
-#line 372 "minimo.tab.c"
+#line 413 "minimo.tab.c"
 
 # ifndef YY_CAST
 #  ifdef __cplusplus
@@ -424,9 +465,11 @@ enum yysymbol_kind_t
   YYSYMBOL_25_2 = 25,                      /* $@2  */
   YYSYMBOL_26_3 = 26,                      /* $@3  */
   YYSYMBOL_27_4 = 27,                      /* $@4  */
-  YYSYMBOL_comparar = 28,                  /* comparar  */
-  YYSYMBOL_decvar = 29,                    /* decvar  */
-  YYSYMBOL_exp = 30                        /* exp  */
+  YYSYMBOL_28_5 = 28,                      /* $@5  */
+  YYSYMBOL_comparar = 29,                  /* comparar  */
+  YYSYMBOL_decvar = 30,                    /* decvar  */
+  YYSYMBOL_res = 31,                       /* res  */
+  YYSYMBOL_exp = 32                        /* exp  */
 };
 typedef enum yysymbol_kind_t yysymbol_kind_t;
 
@@ -748,16 +791,16 @@ union yyalloc
 /* YYFINAL -- State number of the termination state.  */
 #define YYFINAL  4
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   82
+#define YYLAST   92
 
 /* YYNTOKENS -- Number of terminals.  */
 #define YYNTOKENS  21
 /* YYNNTS -- Number of nonterminals.  */
-#define YYNNTS  10
+#define YYNNTS  12
 /* YYNRULES -- Number of rules.  */
-#define YYNRULES  44
+#define YYNRULES  49
 /* YYNSTATES -- Number of states.  */
-#define YYNSTATES  86
+#define YYNSTATES  96
 
 /* YYMAXUTOK -- Last valid token kind.  */
 #define YYMAXUTOK   275
@@ -808,11 +851,11 @@ static const yytype_int8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_int16 yyrline[] =
 {
-       0,   317,   317,   317,   318,   318,   319,   319,   320,   321,
-     321,   322,   324,   325,   326,   327,   328,   329,   330,   331,
-     332,   333,   334,   335,   336,   337,   338,   339,   340,   341,
-     342,   343,   344,   345,   346,   347,   349,   350,   352,   353,
-     354,   355,   356,   357,   358
+       0,   358,   358,   358,   359,   359,   360,   360,   361,   361,
+     362,   362,   363,   365,   366,   367,   368,   369,   370,   371,
+     372,   373,   374,   375,   376,   377,   378,   379,   380,   381,
+     382,   383,   384,   385,   386,   387,   388,   390,   392,   393,
+     398,   399,   400,   401,   403,   404,   405,   406,   407,   408
 };
 #endif
 
@@ -832,8 +875,8 @@ static const char *const yytname[] =
   "ABRE_PARENTESES", "FECHA_PARENTESES", "ABRE_CHAVES", "RETURN",
   "PONTO_E_VIRGULA", "FECHA_CHAVES", "DESCONHECIDO", "MAIS", "MENOS",
   "MULT", "IGUAL", "MENOR", "MAIOR", "EXCLAMACAO", "ID", "NUM", "$accept",
-  "programa", "$@1", "corpo", "$@2", "$@3", "$@4", "comparar", "decvar",
-  "exp", YY_NULLPTR
+  "programa", "$@1", "corpo", "$@2", "$@3", "$@4", "$@5", "comparar",
+  "decvar", "res", "exp", YY_NULLPTR
 };
 
 static const char *
@@ -854,7 +897,7 @@ static const yytype_int16 yytoknum[] =
 };
 #endif
 
-#define YYPACT_NINF (-15)
+#define YYPACT_NINF (-40)
 
 #define yypact_value_is_default(Yyn) \
   ((Yyn) == YYPACT_NINF)
@@ -868,15 +911,16 @@ static const yytype_int16 yytoknum[] =
      STATE-NUM.  */
 static const yytype_int8 yypact[] =
 {
-       1,     4,     6,    32,   -15,    33,    46,   -15,    -1,    27,
-       0,    55,    61,    -1,    63,     7,    -2,    34,    64,    19,
-      25,   -15,   -15,   -15,   -15,   -15,    -3,    59,     2,    15,
-      60,    62,    21,    23,    65,   -15,   -15,     7,     7,     7,
-      67,    69,    -1,   -15,    35,    37,   -15,   -15,    39,   -15,
-     -15,    41,    43,    45,   -15,   -15,    47,   -15,   -15,    49,
-      -1,    -1,    68,    68,   -15,   -15,   -15,   -15,   -15,   -15,
-     -15,   -15,   -15,   -15,   -15,   -15,   -15,   -15,   -15,   -15,
-     -15,   -15,   -15,   -15,   -15,   -15
+       2,     3,     9,    13,   -40,    16,     7,   -40,     0,    15,
+       1,    21,    45,   -40,    38,     8,    53,    57,    48,    26,
+      10,   -40,     0,   -40,   -40,   -40,    -2,    50,    33,    39,
+      61,    74,    41,    47,    75,   -40,   -40,     8,     8,     8,
+      10,   -40,   -40,    37,   -40,     0,   -40,    -3,    44,   -40,
+     -40,    58,   -40,   -40,    60,    62,    64,   -40,   -40,    66,
+     -40,   -40,    68,     0,     0,    77,    77,   -40,    31,   -40,
+      10,    10,    10,   -40,   -40,   -40,   -40,   -40,   -40,   -40,
+     -40,   -40,   -40,   -40,   -40,   -40,   -40,   -40,   -40,   -40,
+     -40,   -40,   -40,    78,    78,   -40
 };
 
   /* YYDEFACT[STATE-NUM] -- Default reduction number in state STATE-NUM.
@@ -884,27 +928,30 @@ static const yytype_int8 yypact[] =
      means the default is an error.  */
 static const yytype_int8 yydefact[] =
 {
-       0,     0,     0,     0,     1,     0,     0,     2,    11,     0,
-      44,     0,     0,    11,     0,    44,    43,    42,     0,     0,
-       0,     3,     8,     6,    43,    42,     0,     0,     0,     0,
-       0,     0,     0,     0,     0,     9,     4,    44,    44,    44,
-       0,     0,    11,    41,     0,     0,    27,    25,     0,    19,
-      17,     0,     0,     0,    26,    24,     0,    18,    16,     0,
-      11,    11,    38,    39,    40,    37,    36,     7,    15,    13,
-      31,    29,    23,    21,    35,    33,    14,    12,    30,    28,
-      22,    20,    34,    32,    10,     5
+       0,     0,     0,     0,     1,     0,     0,     2,    12,     0,
+       0,     0,     0,     8,     0,     0,    49,    48,     0,     0,
+       0,     3,    12,     6,    49,    48,     0,     0,     0,     0,
+       0,     0,     0,     0,     0,    10,     4,     0,     0,     0,
+       0,    39,    38,     0,     9,    12,    47,     0,     0,    28,
+      26,     0,    20,    18,     0,     0,     0,    27,    25,     0,
+      19,    17,     0,    12,    12,    44,    45,    46,     0,    37,
+       0,     0,     0,     7,    16,    14,    32,    30,    24,    22,
+      36,    34,    15,    13,    31,    29,    23,    21,    35,    33,
+      11,     5,    43,    40,    41,    42
 };
 
   /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int8 yypgoto[] =
 {
-     -15,   -15,   -15,   -13,   -15,   -15,   -15,   -15,   -15,   -14
+     -40,   -40,   -40,   -22,   -40,   -40,   -40,   -40,   -40,   -40,
+     -39,   -13
 };
 
   /* YYDEFGOTO[NTERM-NUM].  */
 static const yytype_int8 yydefgoto[] =
 {
-       0,     2,     8,    12,    61,    42,    60,    18,    13,    19
+       0,     2,     8,    12,    64,    45,    22,    63,    18,    13,
+      43,    19
 };
 
   /* YYTABLE[YYPACT[STATE-NUM]] -- What to do in state STATE-NUM.  If
@@ -912,28 +959,30 @@ static const yytype_int8 yydefgoto[] =
      number is the opposite.  If YYTABLE_NINF, syntax error.  */
 static const yytype_int8 yytable[] =
 {
-      22,    26,     9,    43,     1,    15,     4,    10,     3,    37,
-      38,    39,    15,    27,    28,    29,    30,    45,    11,    16,
-      17,    46,    47,    62,    63,    64,    24,    25,    36,    67,
-      48,    37,    38,    39,    49,    50,    53,     5,    56,     6,
-      54,    55,    57,    58,    40,    41,    14,    84,    85,    31,
-      32,    33,    34,     7,    68,    69,    70,    71,    72,    73,
-      74,    75,    76,    77,    78,    79,    80,    81,    82,    83,
-      20,    21,    23,    35,    44,    51,    65,    52,    66,     0,
-      59,     0,    39
+      44,    68,    26,     9,    46,     1,    15,     3,    10,     4,
+      37,    38,    39,    15,     7,    40,    74,    75,     5,    11,
+      16,    17,     6,    73,    65,    66,    67,    24,    25,    41,
+      42,    93,    94,    95,    14,    36,    20,    92,    37,    38,
+      39,    90,    91,    70,    71,    72,    69,    23,    48,    70,
+      71,    72,    49,    50,    51,    21,    56,    35,    52,    53,
+      57,    58,    59,    76,    77,    47,    60,    61,    27,    28,
+      29,    30,    31,    32,    33,    34,    54,    78,    79,    80,
+      81,    82,    83,    84,    85,    86,    87,    88,    89,    55,
+      62,    39,    72
 };
 
 static const yytype_int8 yycheck[] =
 {
-      13,    15,     3,     6,     3,     5,     0,     8,     4,    12,
-      13,    14,     5,    15,    16,    17,    18,    15,    19,    19,
-      20,    19,    20,    37,    38,    39,    19,    20,     9,    42,
-      15,    12,    13,    14,    19,    20,    15,     5,    15,     6,
-      19,    20,    19,    20,    19,    20,    19,    60,    61,    15,
-      16,    17,    18,     7,    19,    20,    19,    20,    19,    20,
-      19,    20,    19,    20,    19,    20,    19,    20,    19,    20,
-      15,    10,     9,     9,    15,    15,     9,    15,     9,    -1,
-      15,    -1,    14
+      22,    40,    15,     3,     6,     3,     5,     4,     8,     0,
+      12,    13,    14,     5,     7,     5,    19,    20,     5,    19,
+      19,    20,     6,    45,    37,    38,    39,    19,    20,    19,
+      20,    70,    71,    72,    19,     9,    15,     6,    12,    13,
+      14,    63,    64,    12,    13,    14,     9,     9,    15,    12,
+      13,    14,    19,    20,    15,    10,    15,     9,    19,    20,
+      19,    20,    15,    19,    20,    15,    19,    20,    15,    16,
+      17,    18,    15,    16,    17,    18,    15,    19,    20,    19,
+      20,    19,    20,    19,    20,    19,    20,    19,    20,    15,
+      15,    14,    14
 };
 
   /* YYSTOS[STATE-NUM] -- The (internal number of the) accessing
@@ -941,34 +990,35 @@ static const yytype_int8 yycheck[] =
 static const yytype_int8 yystos[] =
 {
        0,     3,    22,     4,     0,     5,     6,     7,    23,     3,
-       8,    19,    24,    29,    19,     5,    19,    20,    28,    30,
-      15,    10,    24,     9,    19,    20,    30,    15,    16,    17,
+       8,    19,    24,    30,    19,     5,    19,    20,    29,    32,
+      15,    10,    27,     9,    19,    20,    32,    15,    16,    17,
       18,    15,    16,    17,    18,     9,     9,    12,    13,    14,
-      19,    20,    26,     6,    15,    15,    19,    20,    15,    19,
-      20,    15,    15,    15,    19,    20,    15,    19,    20,    15,
-      27,    25,    30,    30,    30,     9,     9,    24,    19,    20,
+       5,    19,    20,    31,    24,    26,     6,    15,    15,    19,
+      20,    15,    19,    20,    15,    15,    15,    19,    20,    15,
+      19,    20,    15,    28,    25,    32,    32,    32,    31,     9,
+      12,    13,    14,    24,    19,    20,    19,    20,    19,    20,
       19,    20,    19,    20,    19,    20,    19,    20,    19,    20,
-      19,    20,    19,    20,    24,    24
+      24,    24,     6,    31,    31,    31
 };
 
   /* YYR1[YYN] -- Symbol number of symbol that rule YYN derives.  */
 static const yytype_int8 yyr1[] =
 {
-       0,    21,    23,    22,    25,    24,    26,    24,    24,    27,
-      24,    24,    28,    28,    28,    28,    28,    28,    28,    28,
-      28,    28,    28,    28,    28,    28,    28,    28,    28,    28,
-      28,    28,    28,    28,    28,    28,    29,    29,    30,    30,
-      30,    30,    30,    30,    30
+       0,    21,    23,    22,    25,    24,    26,    24,    27,    24,
+      28,    24,    24,    29,    29,    29,    29,    29,    29,    29,
+      29,    29,    29,    29,    29,    29,    29,    29,    29,    29,
+      29,    29,    29,    29,    29,    29,    29,    30,    31,    31,
+      31,    31,    31,    31,    32,    32,    32,    32,    32,    32
 };
 
   /* YYR2[YYN] -- Number of symbols on the right hand side of rule YYN.  */
 static const yytype_int8 yyr2[] =
 {
-       0,     2,     0,     8,     0,     5,     0,     5,     2,     0,
-       5,     0,     4,     4,     4,     4,     3,     3,     3,     3,
-       4,     4,     4,     4,     3,     3,     3,     3,     4,     4,
-       4,     4,     4,     4,     4,     4,     4,     4,     3,     3,
-       3,     3,     1,     1,     0
+       0,     2,     0,     8,     0,     5,     0,     5,     0,     3,
+       0,     5,     0,     4,     4,     4,     4,     3,     3,     3,
+       3,     4,     4,     4,     4,     3,     3,     3,     3,     4,
+       4,     4,     4,     4,     4,     4,     4,     4,     1,     1,
+       3,     3,     3,     3,     3,     3,     3,     3,     1,     1
 };
 
 
@@ -1436,223 +1486,257 @@ yyreduce:
   switch (yyn)
     {
   case 2: /* $@1: %empty  */
-#line 317 "minimo.y"
+#line 358 "minimo.y"
                                                                         {montar_codigo_inicial();}
-#line 1442 "minimo.tab.c"
+#line 1492 "minimo.tab.c"
     break;
 
   case 3: /* programa: INT MAIN ABRE_PARENTESES FECHA_PARENTESES ABRE_CHAVES $@1 corpo FECHA_CHAVES  */
-#line 317 "minimo.y"
+#line 358 "minimo.y"
                                                                                                                       {montar_codigo_final();}
-#line 1448 "minimo.tab.c"
+#line 1498 "minimo.tab.c"
     break;
 
   case 4: /* $@2: %empty  */
-#line 318 "minimo.y"
+#line 359 "minimo.y"
                                                                 {printar_res();        }
-#line 1454 "minimo.tab.c"
+#line 1504 "minimo.tab.c"
     break;
 
   case 6: /* $@3: %empty  */
-#line 319 "minimo.y"
+#line 360 "minimo.y"
                                                                                 {declarar_variavel((yyvsp[-1].string));}
-#line 1460 "minimo.tab.c"
+#line 1510 "minimo.tab.c"
     break;
 
-  case 9: /* $@4: %empty  */
-#line 321 "minimo.y"
+  case 8: /* $@4: %empty  */
+#line 361 "minimo.y"
+                                                                                                {valor = 0;}
+#line 1516 "minimo.tab.c"
+    break;
+
+  case 10: /* $@5: %empty  */
+#line 362 "minimo.y"
                                                                         {printar_res();        }
-#line 1466 "minimo.tab.c"
+#line 1522 "minimo.tab.c"
     break;
 
-  case 12: /* comparar: NUM IGUAL IGUAL NUM  */
-#line 324 "minimo.y"
+  case 13: /* comparar: NUM IGUAL IGUAL NUM  */
+#line 365 "minimo.y"
                                                                         {igualdade_nums((yyvsp[-3].inteiro), (yyvsp[0].inteiro));  	}
-#line 1472 "minimo.tab.c"
+#line 1528 "minimo.tab.c"
     break;
 
-  case 13: /* comparar: ID IGUAL IGUAL NUM  */
-#line 325 "minimo.y"
+  case 14: /* comparar: ID IGUAL IGUAL NUM  */
+#line 366 "minimo.y"
                                                                                 {igualdade_id_num((yyvsp[-3].string), (yyvsp[0].inteiro));	}
-#line 1478 "minimo.tab.c"
+#line 1534 "minimo.tab.c"
     break;
 
-  case 14: /* comparar: NUM IGUAL IGUAL ID  */
-#line 326 "minimo.y"
+  case 15: /* comparar: NUM IGUAL IGUAL ID  */
+#line 367 "minimo.y"
                                                                                 {igualdade_id_num((yyvsp[0].string), (yyvsp[-3].inteiro));	}
-#line 1484 "minimo.tab.c"
+#line 1540 "minimo.tab.c"
     break;
 
-  case 15: /* comparar: ID IGUAL IGUAL ID  */
-#line 327 "minimo.y"
+  case 16: /* comparar: ID IGUAL IGUAL ID  */
+#line 368 "minimo.y"
                                                                                         {igualdade_ids((yyvsp[-3].string), (yyvsp[0].string));   	}
-#line 1490 "minimo.tab.c"
+#line 1546 "minimo.tab.c"
     break;
 
-  case 16: /* comparar: NUM MAIOR NUM  */
-#line 328 "minimo.y"
+  case 17: /* comparar: NUM MAIOR NUM  */
+#line 369 "minimo.y"
                                                                                         {maior_nums((yyvsp[-2].inteiro), (yyvsp[0].inteiro));      	}
-#line 1496 "minimo.tab.c"
+#line 1552 "minimo.tab.c"
     break;
 
-  case 17: /* comparar: ID MAIOR NUM  */
-#line 329 "minimo.y"
+  case 18: /* comparar: ID MAIOR NUM  */
+#line 370 "minimo.y"
                                                                                         {maior_id_num((yyvsp[-2].string), (yyvsp[0].inteiro));    	}
-#line 1502 "minimo.tab.c"
+#line 1558 "minimo.tab.c"
     break;
 
-  case 18: /* comparar: NUM MAIOR ID  */
-#line 330 "minimo.y"
+  case 19: /* comparar: NUM MAIOR ID  */
+#line 371 "minimo.y"
                                                                                         {maior_num_id((yyvsp[-2].inteiro), (yyvsp[0].string));    	}
-#line 1508 "minimo.tab.c"
+#line 1564 "minimo.tab.c"
     break;
 
-  case 19: /* comparar: ID MAIOR ID  */
-#line 331 "minimo.y"
+  case 20: /* comparar: ID MAIOR ID  */
+#line 372 "minimo.y"
                                                                                         {maior_ids((yyvsp[-2].string), (yyvsp[0].string));       	}
-#line 1514 "minimo.tab.c"
+#line 1570 "minimo.tab.c"
     break;
 
-  case 20: /* comparar: NUM MAIOR IGUAL NUM  */
-#line 332 "minimo.y"
+  case 21: /* comparar: NUM MAIOR IGUAL NUM  */
+#line 373 "minimo.y"
                                                                                 {maior_igual_nums((yyvsp[-3].inteiro), (yyvsp[0].inteiro));  }
-#line 1520 "minimo.tab.c"
+#line 1576 "minimo.tab.c"
     break;
 
-  case 21: /* comparar: ID MAIOR IGUAL NUM  */
-#line 333 "minimo.y"
+  case 22: /* comparar: ID MAIOR IGUAL NUM  */
+#line 374 "minimo.y"
                                                                                 {maior_igual_id_num((yyvsp[-3].string), (yyvsp[0].inteiro));}
-#line 1526 "minimo.tab.c"
+#line 1582 "minimo.tab.c"
     break;
 
-  case 22: /* comparar: NUM MAIOR IGUAL ID  */
-#line 334 "minimo.y"
+  case 23: /* comparar: NUM MAIOR IGUAL ID  */
+#line 375 "minimo.y"
                                                                                 {maior_igual_num_id((yyvsp[-3].inteiro), (yyvsp[0].string));}
-#line 1532 "minimo.tab.c"
+#line 1588 "minimo.tab.c"
     break;
 
-  case 23: /* comparar: ID MAIOR IGUAL ID  */
-#line 335 "minimo.y"
+  case 24: /* comparar: ID MAIOR IGUAL ID  */
+#line 376 "minimo.y"
                                                                                         {maior_igual_ids((yyvsp[-3].string), (yyvsp[0].string));   }
-#line 1538 "minimo.tab.c"
+#line 1594 "minimo.tab.c"
     break;
 
-  case 24: /* comparar: NUM MENOR NUM  */
-#line 336 "minimo.y"
+  case 25: /* comparar: NUM MENOR NUM  */
+#line 377 "minimo.y"
                                                                                         {maior_nums((yyvsp[0].inteiro), (yyvsp[-2].inteiro));      	}
-#line 1544 "minimo.tab.c"
+#line 1600 "minimo.tab.c"
     break;
 
-  case 25: /* comparar: ID MENOR NUM  */
-#line 337 "minimo.y"
+  case 26: /* comparar: ID MENOR NUM  */
+#line 378 "minimo.y"
                                                                                         {menor_id_num((yyvsp[-2].string), (yyvsp[0].inteiro));    	}
-#line 1550 "minimo.tab.c"
+#line 1606 "minimo.tab.c"
     break;
 
-  case 26: /* comparar: NUM MENOR ID  */
-#line 338 "minimo.y"
+  case 27: /* comparar: NUM MENOR ID  */
+#line 379 "minimo.y"
                                                                                         {menor_num_id((yyvsp[-2].inteiro), (yyvsp[0].string));    	}
-#line 1556 "minimo.tab.c"
+#line 1612 "minimo.tab.c"
     break;
 
-  case 27: /* comparar: ID MENOR ID  */
-#line 339 "minimo.y"
+  case 28: /* comparar: ID MENOR ID  */
+#line 380 "minimo.y"
                                                                                         {maior_ids((yyvsp[0].string), (yyvsp[-2].string));       	}
-#line 1562 "minimo.tab.c"
+#line 1618 "minimo.tab.c"
     break;
 
-  case 28: /* comparar: NUM MENOR IGUAL NUM  */
-#line 340 "minimo.y"
+  case 29: /* comparar: NUM MENOR IGUAL NUM  */
+#line 381 "minimo.y"
                                                                                 {menor_igual_nums((yyvsp[-3].inteiro), (yyvsp[0].inteiro));  }
-#line 1568 "minimo.tab.c"
+#line 1624 "minimo.tab.c"
     break;
 
-  case 29: /* comparar: ID MENOR IGUAL NUM  */
-#line 341 "minimo.y"
+  case 30: /* comparar: ID MENOR IGUAL NUM  */
+#line 382 "minimo.y"
                                                                                 {menor_igual_id_num((yyvsp[-3].string), (yyvsp[0].inteiro));}
-#line 1574 "minimo.tab.c"
+#line 1630 "minimo.tab.c"
     break;
 
-  case 30: /* comparar: NUM MENOR IGUAL ID  */
-#line 342 "minimo.y"
+  case 31: /* comparar: NUM MENOR IGUAL ID  */
+#line 383 "minimo.y"
                                                                                 {menor_igual_num_id((yyvsp[-3].inteiro), (yyvsp[0].string));}
-#line 1580 "minimo.tab.c"
+#line 1636 "minimo.tab.c"
     break;
 
-  case 31: /* comparar: ID MENOR IGUAL ID  */
-#line 343 "minimo.y"
+  case 32: /* comparar: ID MENOR IGUAL ID  */
+#line 384 "minimo.y"
                                                                                         {menor_igual_ids((yyvsp[-3].string), (yyvsp[0].string));   }
-#line 1586 "minimo.tab.c"
+#line 1642 "minimo.tab.c"
     break;
 
-  case 32: /* comparar: NUM EXCLAMACAO IGUAL NUM  */
-#line 344 "minimo.y"
+  case 33: /* comparar: NUM EXCLAMACAO IGUAL NUM  */
+#line 385 "minimo.y"
                                                                                 {diferente_nums((yyvsp[-3].inteiro), (yyvsp[0].inteiro));  	}
-#line 1592 "minimo.tab.c"
+#line 1648 "minimo.tab.c"
     break;
 
-  case 33: /* comparar: ID EXCLAMACAO IGUAL NUM  */
-#line 345 "minimo.y"
+  case 34: /* comparar: ID EXCLAMACAO IGUAL NUM  */
+#line 386 "minimo.y"
                                                                                 {diferente_id_num((yyvsp[-3].string), (yyvsp[0].inteiro));	}
-#line 1598 "minimo.tab.c"
+#line 1654 "minimo.tab.c"
     break;
 
-  case 34: /* comparar: NUM EXCLAMACAO IGUAL ID  */
-#line 346 "minimo.y"
+  case 35: /* comparar: NUM EXCLAMACAO IGUAL ID  */
+#line 387 "minimo.y"
                                                                                 {diferente_id_num((yyvsp[0].string), (yyvsp[-3].inteiro));	}
-#line 1604 "minimo.tab.c"
+#line 1660 "minimo.tab.c"
     break;
 
-  case 35: /* comparar: ID EXCLAMACAO IGUAL ID  */
-#line 347 "minimo.y"
+  case 36: /* comparar: ID EXCLAMACAO IGUAL ID  */
+#line 388 "minimo.y"
                                                                                 {diferente_ids((yyvsp[-3].string), (yyvsp[0].string));   	}
-#line 1610 "minimo.tab.c"
+#line 1666 "minimo.tab.c"
     break;
 
-  case 36: /* decvar: ID IGUAL NUM PONTO_E_VIRGULA  */
-#line 349 "minimo.y"
-                                                            {atribuir_num_variavel((yyvsp[-3].string), (yyvsp[-1].inteiro));}
-#line 1616 "minimo.tab.c"
+  case 37: /* decvar: ID IGUAL res PONTO_E_VIRGULA  */
+#line 390 "minimo.y"
+                                                                {atribuir_variavel((yyvsp[-3].string));}
+#line 1672 "minimo.tab.c"
     break;
 
-  case 37: /* decvar: ID IGUAL ID PONTO_E_VIRGULA  */
-#line 350 "minimo.y"
-                                                                    {atribuir_id_variavel((yyvsp[-3].string), (yyvsp[-1].string)); }
-#line 1622 "minimo.tab.c"
+  case 38: /* res: NUM  */
+#line 392 "minimo.y"
+                                                                                        {empilhar(&p, (yyvsp[0].inteiro));}
+#line 1678 "minimo.tab.c"
     break;
 
-  case 38: /* exp: exp MAIS exp  */
-#line 352 "minimo.y"
+  case 39: /* res: ID  */
+#line 393 "minimo.y"
+                                                                                                {for(i=0; i < N_MAXIMO_DE_VARIAVEIS; i++) {
+														if (strcmp((yyvsp[0].string), texto_das_variaveis[i]) == 0){
+															valor = valor_das_variaveis[i]; empilhar(&p, valor); valor = 0;
+														}
+													}}
+#line 1688 "minimo.tab.c"
+    break;
+
+  case 40: /* res: res MAIS res  */
+#line 398 "minimo.y"
+                                                                                        {valor+=*buscar_topo(&p); desempilhar(&p); valor+=*buscar_topo(&p); desempilhar(&p); empilhar(&p, valor); valor = 0;}
+#line 1694 "minimo.tab.c"
+    break;
+
+  case 41: /* res: res MENOS res  */
+#line 399 "minimo.y"
+                                                                                        {valor+=(0 - *buscar_topo(&p)); desempilhar(&p); valor+=(*buscar_topo(&p)); desempilhar(&p); empilhar(&p, valor); valor = 0;}
+#line 1700 "minimo.tab.c"
+    break;
+
+  case 42: /* res: res MULT res  */
+#line 400 "minimo.y"
+                                                                                        {valor=*buscar_topo(&p); desempilhar(&p); valor*=*buscar_topo(&p); desempilhar(&p); empilhar(&p, valor); valor = 0;}
+#line 1706 "minimo.tab.c"
+    break;
+
+  case 44: /* exp: exp MAIS exp  */
+#line 403 "minimo.y"
                                                                             {montar_add(); }
-#line 1628 "minimo.tab.c"
+#line 1712 "minimo.tab.c"
     break;
 
-  case 39: /* exp: exp MENOS exp  */
-#line 353 "minimo.y"
+  case 45: /* exp: exp MENOS exp  */
+#line 404 "minimo.y"
                                                                                     {montar_sub(); }
-#line 1634 "minimo.tab.c"
+#line 1718 "minimo.tab.c"
     break;
 
-  case 40: /* exp: exp MULT exp  */
-#line 354 "minimo.y"
+  case 46: /* exp: exp MULT exp  */
+#line 405 "minimo.y"
                                                                                     {montar_mult();}
-#line 1640 "minimo.tab.c"
+#line 1724 "minimo.tab.c"
     break;
 
-  case 42: /* exp: NUM  */
-#line 356 "minimo.y"
+  case 48: /* exp: NUM  */
+#line 407 "minimo.y"
                                                                                             {empilhar_numero((yyvsp[0].inteiro));  }
-#line 1646 "minimo.tab.c"
+#line 1730 "minimo.tab.c"
     break;
 
-  case 43: /* exp: ID  */
-#line 357 "minimo.y"
+  case 49: /* exp: ID  */
+#line 408 "minimo.y"
                                                                                             {empilhar_variavel((yyvsp[0].string));}
-#line 1652 "minimo.tab.c"
+#line 1736 "minimo.tab.c"
     break;
 
 
-#line 1656 "minimo.tab.c"
+#line 1740 "minimo.tab.c"
 
       default: break;
     }
@@ -1846,9 +1930,13 @@ yyreturn:
   return yyresult;
 }
 
-#line 360 "minimo.y"
+#line 410 "minimo.y"
 
 int main(){
 	yyparse();
 	printf("Programa OK.\n");
 }
+
+/* decvar      : ID IGUAL NUM PONTO_E_VIRGULA 		    {atribuir_num_variavel($1, $3);} 
+			| ID IGUAL ID PONTO_E_VIRGULA 		    {atribuir_id_variavel($1, $3); } 
+			; */

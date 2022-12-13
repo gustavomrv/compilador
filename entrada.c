@@ -1,5 +1,7 @@
 int main(){
-    int z; int x;
-    z = 2; x = 8;
-    return z != 2;
+    int x; int y; int z; int t;
+    t = 2; z = 1;
+    x = (1 + 2) - 1;   
+    y = (x + (2 * z)); 
+    return z + (x * y) - 4;
 }

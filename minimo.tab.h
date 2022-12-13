@@ -80,7 +80,7 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 303 "minimo.y"
+#line 344 "minimo.y"
  
   	char *string; 
   	int inteiro; 

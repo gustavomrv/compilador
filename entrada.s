@@ -5,7 +5,9 @@
 main:
 	pushq	%rbp
 	movq	%rsp, %rbp
-	movl	$1, %eax
+	movl	$2, -4(%rbp)
+	movl	$4, -8(%rbp)
+	movl	-8(%rbp), %eax
 	popq	%rbp
 	ret
 	.size	main, .-main
