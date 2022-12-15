@@ -11,9 +11,7 @@ LETRA	[A-Za-z_]
 %%
 " "		                    { col+=yyleng;}
 \n		                    { lin++; col=1; }
-"<"                         { col+=yyleng; return MENOR; }
-">"                         { col+=yyleng; return MAIOR; }
-"!"                         { col+=yyleng; return EXCLAMACAO; }
+"=="|"<="|">="|"<"|">"|"!=" { col+=yyleng; return OPERADOR_RELACIONAL; }
 "="                         { col+=yyleng; return IGUAL; }
 "+"		                    { col+=yyleng; return MAIS; }
 "*"		                    { col+=yyleng; return MULT; }

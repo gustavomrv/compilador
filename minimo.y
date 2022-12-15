@@ -347,8 +347,9 @@ void menor_igual_ids(char variavel_a[] , char variavel_b[]){
 } 
 
 %token INT MAIN ABRE_PARENTESES FECHA_PARENTESES ABRE_CHAVES RETURN PONTO_E_VIRGULA FECHA_CHAVES DESCONHECIDO
-%token MAIS MENOS MULT IGUAL MENOR MAIOR EXCLAMACAO
+%token MAIS MENOS MULT IGUAL 
 
+%token <string> OPERADOR_RELACIONAL
 %token <string> ID
 %token <inteiro> NUM
 
@@ -359,33 +360,7 @@ programa	: INT MAIN ABRE_PARENTESES FECHA_PARENTESES ABRE_CHAVES {montar_codigo_
 corpo		: RETURN exp PONTO_E_VIRGULA   			{printar_res();        } corpo
 			| INT ID PONTO_E_VIRGULA	   			{declarar_variavel($2);} corpo
 			| decvar 								{valor = 0;}			 corpo
-			| RETURN comparar PONTO_E_VIRGULA		{printar_res();        } corpo
 			|
-			;
-comparar	: NUM IGUAL IGUAL NUM					{igualdade_nums($1, $4);  	}
-			| ID  IGUAL IGUAL NUM					{igualdade_id_num($1, $4);	}
-			| NUM IGUAL IGUAL ID					{igualdade_id_num($4, $1);	}
-			| ID IGUAL IGUAL ID						{igualdade_ids($1, $4);   	}
-			| NUM MAIOR NUM							{maior_nums($1, $3);      	}
-			| ID MAIOR NUM							{maior_id_num($1, $3);    	}
-			| NUM MAIOR ID							{maior_num_id($1, $3);    	}
-			| ID MAIOR ID							{maior_ids($1, $3);       	}
-			| NUM MAIOR IGUAL NUM					{maior_igual_nums($1, $4);  }
-			| ID MAIOR IGUAL NUM					{maior_igual_id_num($1, $4);}
-			| NUM MAIOR IGUAL ID					{maior_igual_num_id($1, $4);}
-			| ID MAIOR IGUAL ID						{maior_igual_ids($1, $4);   }
-			| NUM MENOR NUM							{maior_nums($3, $1);      	}
-			| ID MENOR NUM							{menor_id_num($1, $3);    	}
-			| NUM MENOR ID							{menor_num_id($1, $3);    	}
-			| ID MENOR ID							{maior_ids($3, $1);       	}
-			| NUM MENOR IGUAL NUM					{menor_igual_nums($1, $4);  }
-			| ID MENOR IGUAL NUM					{menor_igual_id_num($1, $4);}
-			| NUM MENOR IGUAL ID					{menor_igual_num_id($1, $4);}
-			| ID MENOR IGUAL ID						{menor_igual_ids($1, $4);   }
-			| NUM EXCLAMACAO IGUAL NUM				{diferente_nums($1, $4);  	}
-			| ID EXCLAMACAO IGUAL NUM				{diferente_id_num($1, $4);	}
-			| NUM EXCLAMACAO IGUAL ID				{diferente_id_num($4, $1);	}
-			| ID EXCLAMACAO IGUAL ID				{diferente_ids($1, $4);   	}
 			;
 decvar      : ID IGUAL res PONTO_E_VIRGULA			{atribuir_variavel($1);}
 			;
@@ -412,7 +387,7 @@ int main(){
 	yyparse();
 	printf("Programa OK.\n");
 }
-
-/* decvar      : ID IGUAL NUM PONTO_E_VIRGULA 		    {atribuir_num_variavel($1, $3);} 
-			| ID IGUAL ID PONTO_E_VIRGULA 		    {atribuir_id_variavel($1, $3); } 
-			; */
+/*
+comparar	: res OPERADOR_RELACIONAL res			{}
+			;
+*/

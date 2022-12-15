@@ -67,11 +67,9 @@ extern int yydebug;
     MENOS = 268,                   /* MENOS  */
     MULT = 269,                    /* MULT  */
     IGUAL = 270,                   /* IGUAL  */
-    MENOR = 271,                   /* MENOR  */
-    MAIOR = 272,                   /* MAIOR  */
-    EXCLAMACAO = 273,              /* EXCLAMACAO  */
-    ID = 274,                      /* ID  */
-    NUM = 275                      /* NUM  */
+    OPERADOR_RELACIONAL = 271,     /* OPERADOR_RELACIONAL  */
+    ID = 272,                      /* ID  */
+    NUM = 273                      /* NUM  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -85,7 +83,7 @@ union YYSTYPE
   	char *string; 
   	int inteiro; 
 
-#line 89 "minimo.tab.h"
+#line 87 "minimo.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;
